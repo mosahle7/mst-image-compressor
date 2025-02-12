@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
@@ -13,13 +14,49 @@ const ImageUploader = () => {
     };
 
     return(
-        <div>
-        <input type="file" accept="image/*" onChange={handleFileChange}/>
+        <Container>
+        <FileInput id="file-upload" type="file" accept="image/*" onChange={handleFileChange}/>
+        <Label htmlFor="file-upload">Upload Image</Label>
 
-        {preview && <img src={preview} alt="Preview" width={600}/>}
-        </div>
+        {preview && <PreviewImage src={preview} alt="Preview"/>}
+        </Container>
     )
 
 }
+
+const Container = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    gap: 1rem;
+    padding: 2rem;
+    border: 2px dashed #aaa;
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+`
+
+const FileInput = styled.input`
+    display: none;
+`
+
+const Label = styled.label`
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover{
+        background-color: #0056b3;
+    }
+`;
+
+const PreviewImage = styled.img`
+    width: 600px;
+    margin-top: 20px;
+    border-radius: 8px;
+`
 
 export default ImageUploader
