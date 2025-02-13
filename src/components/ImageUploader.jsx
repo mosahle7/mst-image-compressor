@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { uploadeImage } from "./fetcher";
 
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
@@ -32,6 +33,17 @@ const ImageUploader = () => {
 
     };
 
+    const handleButton = async () => {
+        if (image) {
+            await uploadeImage(image);
+        }
+
+        else {
+            console.error("No image selected!");
+        }
+    
+    }
+
     return(
         <Wrapper>
             <Container
@@ -44,16 +56,20 @@ const ImageUploader = () => {
 
                 {preview && <PreviewImage src={preview} alt="Preview"/>}
             </Container>
+            <UploadButton onClick={handleButton}>Compress</UploadButton>
         </Wrapper>
+        
     )
 
 }
 
 const Wrapper = styled.div`
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
+    gap: 20px;
 
 `
 const Container = styled.div`
@@ -101,5 +117,18 @@ const PreviewImage = styled.img`
     margin-top: 20px;
     border-radius: 8px;
 `
+
+const UploadButton = styled.button`
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover{
+        background-color: #0056b3;
+    }
+`;
 
 export default ImageUploader
