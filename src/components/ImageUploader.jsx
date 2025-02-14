@@ -5,7 +5,8 @@ import { uploadeImage } from "./fetcher";
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
-
+    const [compressed, setCompressed] = useState(null);
+    
     const handleFileChange = (event) => {
         let file;
         if (event.target.files && event.target.files.length>0){
@@ -35,7 +36,8 @@ const ImageUploader = () => {
 
     const handleButton = async () => {
         if (image) {
-            await uploadeImage(image);
+            const compressedImageURL = await uploadeImage(image);
+            setCompressed(compressedImageURL);
         }
 
         else {
@@ -57,6 +59,13 @@ const ImageUploader = () => {
                 {preview && <PreviewImage src={preview} alt="Preview"/>}
             </Container>
             <UploadButton onClick={handleButton}>Compress</UploadButton>
+
+            {compressed &&
+                <CompressedContainer>
+                    <p>Compressed Image:</p>
+                    <CompressedImage src={compressed} alt="Compressed"/>
+                    
+                </CompressedContainer>}
         </Wrapper>
         
     )
@@ -130,5 +139,16 @@ const UploadButton = styled.button`
         background-color: #0056b3;
     }
 `;
+
+const CompressedContainer = styled.div`
+    margin-top: 20px;
+    text-align: center;
+`
+
+const CompressedImage = styled.img`
+    width: 600px;
+    margin-top: 20px;
+    border-radius: 8px;
+`
 
 export default ImageUploader

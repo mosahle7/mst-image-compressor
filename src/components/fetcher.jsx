@@ -5,12 +5,15 @@ export const uploadeImage = async (image) => {
     formData.append("file", image);
 
     try {
-        const response = await axios.post("http://localhost:5000/upload", formData, {
+        const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
-            }
+            },
+            responseType: "blob"
         });
-        return response.data;
+
+        const imageURL = URL.createObjectURL(response.data);
+        return imageURL;
         }
     
         catch(error) {
