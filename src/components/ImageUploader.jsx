@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { uploadImage } from "./fetcher";
 
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
-    const [compressed, setCompressed] = useState(null);
+    // const [compressed, setCompressed] = useState(null);
     
+    const navigate = useNavigate();
+
     const handleFileChange = (event) => {
         let file;
         if (event.target.files && event.target.files.length>0){
@@ -37,7 +40,8 @@ const ImageUploader = () => {
     const handleButton = async () => {
         if (image) {
             const compressedImageURL = await uploadImage(image);
-            setCompressed(compressedImageURL);
+            console.log("Compressed Image URL: ",compressedImageURL)
+            navigate('/compressed', {state: {image: compressedImageURL} });
         }
 
         else {
@@ -46,28 +50,36 @@ const ImageUploader = () => {
     
     }
 
+    const handleRemove = () => {
+        setImage(null);
+        setPreview(null);
+    }
+
     return(
         <Wrapper>
             <Container
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
             >
-                <p>Drag & Drop here</p>
+                <p>Drag & Drop</p>
+                <p style={{textAlign: 'center', fontWeight: 'bold', marginBottom: '5px', marginTop:'-15px'}}>OR</p>
                 <FileInput id="file-upload" type="file" accept="image/*" onChange={handleFileChange}/>
-                <Label htmlFor="file-upload">Upload Image</Label>
+                <Label htmlFor="file-upload">Select Image</Label>
 
-                {preview && <PreviewImage src={preview} alt="Preview"/>}
+                {preview && (
+                <ImageWrapper>
+                    <RemoveButton onClick={handleRemove}>X</RemoveButton>
+                    <PreviewImage src={preview} alt="Preview"/>
+                </ImageWrapper>
+                )}
+
             </Container>
             
+
             {image &&
             <UploadButton onClick={handleButton}>Compress</UploadButton>
             }
-            {compressed &&
-                <CompressedContainer>
-                    <p>Compressed Image:</p>
-                    <CompressedImage src={compressed} alt="Compressed"/>
-                    
-                </CompressedContainer>}
+
         </Wrapper>
         
     )
@@ -94,7 +106,7 @@ const Container = styled.div`
     border: 2px dashed #aaa;
     border-radius: 8px;
     text-align: center;
-    width: 90%;
+    width: 50%;
     max-width: 1000px;
     max-height: 100vh;
     cursor: pointer;
@@ -124,9 +136,11 @@ const Label = styled.label`
 `;
 
 const PreviewImage = styled.img`
-    width: 600px;
+    width: 100%;
+    height: 100%;
     margin-top: 20px;
     border-radius: 8px;
+    object-fit: cover;
 `
 
 const UploadButton = styled.button`
@@ -142,15 +156,32 @@ const UploadButton = styled.button`
     }
 `;
 
-const CompressedContainer = styled.div`
-    margin-top: 20px;
-    text-align: center;
+
+const ImageWrapper = styled.div`
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    width: 400px;
+    height: 500px;
+    overflow: hidden;
+
 `
 
-const CompressedImage = styled.img`
-    width: 600px;
-    margin-top: 20px;
-    border-radius: 8px;
+const RemoveButton = styled.button`
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 
 export default ImageUploader

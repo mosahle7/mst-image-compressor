@@ -5,7 +5,7 @@ import { HomeIcon } from './Icons';
 
 export const Layout = () => {
     return(
-    <>
+    <AppContainer>
     <header>
         <HeaderHomeIcon>
             <Link to='/'><HomeIcon width={40}/></Link>
@@ -24,10 +24,16 @@ export const Layout = () => {
         <Link to='/'>Home</Link>
 
     </footer>
-    </>
+    </AppContainer>
     )
 
 }
+
+const AppContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+`;
 
 const HeaderHomeIcon = styled.div`
     justify-self: start;
