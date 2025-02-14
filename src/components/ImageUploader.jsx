@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { uploadeImage } from "./fetcher";
+import { uploadImage } from "./fetcher";
 
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
@@ -36,7 +36,7 @@ const ImageUploader = () => {
 
     const handleButton = async () => {
         if (image) {
-            const compressedImageURL = await uploadeImage(image);
+            const compressedImageURL = await uploadImage(image);
             setCompressed(compressedImageURL);
         }
 
@@ -58,8 +58,10 @@ const ImageUploader = () => {
 
                 {preview && <PreviewImage src={preview} alt="Preview"/>}
             </Container>
+            
+            {image &&
             <UploadButton onClick={handleButton}>Compress</UploadButton>
-
+            }
             {compressed &&
                 <CompressedContainer>
                     <p>Compressed Image:</p>

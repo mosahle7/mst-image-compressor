@@ -1,0 +1,44 @@
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
+import styled from 'styled-components';
+import { HomeIcon } from './Icons';
+
+export const Layout = () => {
+    return(
+    <>
+    <header>
+        <HeaderHomeIcon>
+            <Link to='/'><HomeIcon width={40}/></Link>
+        </HeaderHomeIcon>
+
+        <Title> mSt Image Compressor </Title>
+
+    </header>
+
+    <main>
+        <Outlet></Outlet>
+    </main>
+
+    <footer>
+        <Text>mSt Image Compressor</Text>
+        <Link to='/'>Home</Link>
+
+    </footer>
+    </>
+    )
+
+}
+
+const HeaderHomeIcon = styled.div`
+    justify-self: start;
+    padding-top: 7px;
+`;
+
+const Title = styled.div`
+    justify-self: center;
+    margin-left: -40px;
+`;
+
+const Text = styled.div`
+    padding-bottom: 10px;
+`
