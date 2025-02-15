@@ -9,11 +9,12 @@ export const uploadImage = async (image) => {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
-            responseType: "blob"
-        });
+            // responseType: "blob"
 
-        const imageURL = URL.createObjectURL(response.data);
-        return imageURL;
+        });
+        return response.data;
+
+        
         }
     
         catch(error) {

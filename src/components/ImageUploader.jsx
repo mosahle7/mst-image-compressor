@@ -6,6 +6,9 @@ import { uploadImage } from "./fetcher";
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [fileName, setFileName] = useState("");
+    const [fileSize, setFileSize] = useState("");
+
     // const [compressed, setCompressed] = useState(null);
     
     const navigate = useNavigate();
@@ -23,6 +26,9 @@ const ImageUploader = () => {
         if (file){
             setImage(file);
             setPreview(URL.createObjectURL(file));
+            setFileName(file.name);
+            const size = (file.size/1000).toFixed(2);
+            setFileSize(size);    
         }
     };
 
@@ -39,9 +45,15 @@ const ImageUploader = () => {
 
     const handleButton = async () => {
         if (image) {
-            const compressedImageURL = await uploadImage(image);
-            console.log("Compressed Image URL: ",compressedImageURL)
-            navigate('/compressed', {state: {image: compressedImageURL} });
+            const compressedData = await uploadImage(image);
+            console.log("Compressed Image Data: ",compressedData)
+            navigate('/compressed', {
+                state: {
+                    image: compressedData.image_url,
+                    size: compressedData.size,
+                    name: compressedData.name
+                
+                }});
         }
 
         else {
@@ -53,6 +65,8 @@ const ImageUploader = () => {
     const handleRemove = () => {
         setImage(null);
         setPreview(null);
+
+        document.getElementById("file-upload").value = "";
     }
 
     return(
@@ -60,11 +74,16 @@ const ImageUploader = () => {
             <Container
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
-            >
+            >   
+                {!preview && (
+                <>
                 <p>Drag & Drop</p>
                 <p style={{textAlign: 'center', fontWeight: 'bold', marginBottom: '5px', marginTop:'-15px'}}>OR</p>
                 <FileInput id="file-upload" type="file" accept="image/*" onChange={handleFileChange}/>
                 <Label htmlFor="file-upload">Select Image</Label>
+                </>
+            
+                )}
 
                 {preview && (
                 <ImageWrapper>
@@ -76,9 +95,12 @@ const ImageUploader = () => {
             </Container>
             
 
-            {image &&
+            {image &&(
+            <>
+            <ImgDetails>{fileName}  {fileSize} KB</ImgDetails>
             <UploadButton onClick={handleButton}>Compress</UploadButton>
-            }
+            </>
+            )}
 
         </Wrapper>
         
@@ -161,7 +183,7 @@ const ImageWrapper = styled.div`
     position: relative;
     display: inline-block;
     margin-top: 10px;
-    width: 400px;
+    width: 500px;
     height: 500px;
     overflow: hidden;
 
@@ -169,9 +191,9 @@ const ImageWrapper = styled.div`
 
 const RemoveButton = styled.button`
     position: absolute;
-    top: 5px;
-    right: 5px;
-    background: rgba(0, 0, 0, 0.7);
+    top: 30px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.3);
     color: white;
     border: none;
     border-radius: 50%;
@@ -182,6 +204,15 @@ const RemoveButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-`
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
 
+    &:hover {
+        background: rgba(0, 0, 0, 0.7); /* Darker hover effect */
+        transform: scale(1.1); /* Slight zoom effect */
+    }
+`
+const ImgDetails = styled.pre`
+    font-size: 15px;
+    font-weight: 600;
+`
 export default ImageUploader
