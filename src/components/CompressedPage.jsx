@@ -18,6 +18,23 @@ export const CompressedPage = () => {
         }
     }, [location.state]);
    
+    const handleDownload = () => {
+        if (!Img) return;
+
+        const base64Data = Img.split(",")[1];
+        const byteCharacters = atob(base64Data);
+        const byteNums = new Array(byteCharacters.length).fill().map((_, i) => byteCharacters.charCodeAt(i));
+        const byteArray = new Uint8Array(byteNums);
+        const blob = new Blob([byteArray], {type: "image/png"});
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = imgName;
+        document.body.appendChild(link);
+        link.click()
+        document.body.removeChild(link);
+
+    }   
 
     return (
         <>
@@ -28,7 +45,7 @@ export const CompressedPage = () => {
                 <ImgDetails>
                 {imgName}  {imgSize} KB
                 </ImgDetails>
-                <DownloadButton>Download</DownloadButton>
+                <DownloadButton onClick={handleDownload}>Download</DownloadButton>
             </CompressedContainer>
             )}
         </>
