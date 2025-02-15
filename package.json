@@ -1,5 +1,5 @@
 {
-  "homepage": "mosahle7.github.io/mst-image-compressor",
+  "homepage": "https://mosahle7.github.io/mst-image-compressor",
   "name": "kmeans-image-compressor",
   "private": true,
   "version": "0.0.0",
@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "axios": "^1.7.9",
