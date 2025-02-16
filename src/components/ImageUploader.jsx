@@ -77,7 +77,7 @@ const ImageUploader = () => {
             >   
                 {!preview && (
                 <>
-                <p>Drag & Drop</p>
+                <p>Drag & Drop Test</p>
                 <p style={{textAlign: 'center', fontWeight: 'bold', marginBottom: '5px', marginTop:'-15px'}}>OR</p>
                 <FileInput id="file-upload" type="file" accept="image/*" onChange={handleFileChange}/>
                 <Label htmlFor="file-upload">Select Image</Label>
