@@ -5,7 +5,7 @@ export const uploadImage = async (image) => {
     formData.append("file", image);
 
     try {
-        const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
+        const response = await axios.post("https://potential-meme-5776rxxv659cvj9-5000.app.github.dev/upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
