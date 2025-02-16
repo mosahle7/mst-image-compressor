@@ -11,7 +11,7 @@ function App() {
   return(
     <>
   
-    <BrowserRouter>
+    <BrowserRouter basename="/mst-image-compressor">
     <Routes>
       <Route path = '/' element = {<Layout/>}>
       <Route index element={<ImageUploader/>}/>
