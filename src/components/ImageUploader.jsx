@@ -27,7 +27,7 @@ const ImageUploader = () => {
             setImage(file);
             setPreview(URL.createObjectURL(file));
             setFileName(file.name);
-            const size = (file.size/1000).toFixed(2);
+            const size = (file.size/1024).toFixed(2);
             setFileSize(size);    
         }
     };
@@ -45,15 +45,26 @@ const ImageUploader = () => {
 
     const handleButton = async () => {
         if (image) {
-            const compressedData = await uploadImage(image);
-            console.log("Compressed Image Data: ",compressedData)
+           
             navigate('/compressed', {
                 state: {
-                    image: compressedData.image_url,
-                    size: compressedData.size,
-                    name: compressedData.name
+                    image: null,
+                    size: null,
+                    name: "Processing..."
                 
                 }});
+
+                const compressedData = await uploadImage(image);
+                console.log("Compressed Image Data: ",compressedData);
+
+                navigate('/compressed', {
+                    replace: true,  // Prevent back navigation to the loading state
+                    state: {
+                        image: compressedData.image_url,
+                        size: compressedData.size,
+                        name: compressedData.name
+                    }
+                })
         }
 
         else {
