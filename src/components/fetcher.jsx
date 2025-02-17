@@ -9,7 +9,7 @@ export const uploadImage = async (image) => {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
-            withCredentials: true  // Ensure credentials are included
+            // withCredentials: true  // Ensure credentials are included
             // responseType: "blob"
 
         });
