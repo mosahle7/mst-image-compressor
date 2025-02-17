@@ -5,10 +5,11 @@ export const uploadImage = async (image) => {
     formData.append("file", image);
 
     try {
-        const response = await axios.post("https://potential-meme-5776rxxv659cvj9-5000.app.github.dev/upload", formData, {
+        const response = await axios.post("https://img-compression-backend.onrender.com/upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
+            withCredentials: true  // Ensure credentials are included
             // responseType: "blob"
 
         });
