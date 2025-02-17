@@ -7,6 +7,7 @@ export const CompressedPage = () => {
     const [imgName, setimgName] = useState("");
     const location = useLocation();
     const [Img,setImg] = useState("");
+    const [loading, setLoading] = useState(true);
    
     useEffect(() => {
         if(location.state) {
@@ -14,6 +15,7 @@ export const CompressedPage = () => {
             setImg(location.state.image);
             setImgSize(location.state.size);
             setimgName(location.state.name);
+            setLoading(false);
 
         }
     }, [location.state]);
@@ -38,16 +40,22 @@ export const CompressedPage = () => {
 
     return (
         <>
-            {Img &&(
+           
             <CompressedContainer>
+                {loading ? (
+                     <LoadingMessage>Processing image, please wait...</LoadingMessage>
+                ): (
+                <>
                 <p>Compressed Image:</p>
                 <CompressedImage src={Img} alt="Compressed"/>
                 <ImgDetails>
                 {imgName}  {imgSize} KB
                 </ImgDetails>
                 <DownloadButton onClick={handleDownload}>Download</DownloadButton>
+                </>
+                )}
             </CompressedContainer>
-            )}
+            
         </>
     )
 
@@ -81,3 +89,9 @@ const DownloadButton = styled.button`
         background-color: #0056b3;
     }
 `;
+
+const LoadingMessage = styled.p`
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+`
