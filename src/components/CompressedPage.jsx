@@ -1,16 +1,22 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 export const CompressedPage = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [imgSize, setImgSize] = useState("");
     const [imgName, setimgName] = useState("");
-    const location = useLocation();
     const [Img,setImg] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(location.state?.loading ?? true);
    
     useEffect(() => {
-        if(location.state) {
+        if (!location.state){
+            navigate("/");
+        }
+
+        else if(location.state?.image) {
             console.log("Local State: ", location.state);
             setImg(location.state.image);
             setImgSize(location.state.size);
@@ -18,7 +24,7 @@ export const CompressedPage = () => {
             setLoading(false);
 
         }
-    }, [location.state]);
+    }, [location.state, navigate]);
    
     const handleDownload = () => {
         if (!Img) return;
@@ -43,7 +49,7 @@ export const CompressedPage = () => {
            
             <CompressedContainer>
                 {loading ? (
-                     <LoadingMessage>Processing image, please wait...</LoadingMessage>
+                     <LoadingMessage>Processing image, this may take a few seconds, please wait...</LoadingMessage>
                 ): (
                 <>
                 <p>Compressed Image:</p>
@@ -73,7 +79,8 @@ const CompressedImage = styled.img`
 `
 const ImgDetails = styled.pre`
     font-size: 15px;
-    margin-top: 2px;
+    margin-top: 8px;
+    margin-bottom: 30px;
 `
 
 const DownloadButton = styled.button`

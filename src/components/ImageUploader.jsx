@@ -48,9 +48,7 @@ const ImageUploader = () => {
            
             navigate('/compressed', {
                 state: {
-                    image: null,
-                    size: null,
-                    name: "Processing..."
+                    loading: true
                 
                 }});
 
