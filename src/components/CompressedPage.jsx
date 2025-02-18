@@ -1,6 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import io from "socket.io-client";
+
+const socket = io("https://img-compression-backend.onrender.com");
 
 export const CompressedPage = () => {
     const location = useLocation();
@@ -10,6 +13,7 @@ export const CompressedPage = () => {
     const [imgName, setimgName] = useState("");
     const [Img,setImg] = useState("");
     const [loading, setLoading] = useState(location.state?.loading ?? true);
+    const [progress, setProgress] = useState(0);
    
     useEffect(() => {
         if (!location.state){
@@ -25,7 +29,22 @@ export const CompressedPage = () => {
 
         }
     }, [location.state, navigate]);
-   
+    
+    useEffect(() => {
+        socket.on("progress", (percent) => {
+            setProgress(percent);
+        });
+
+        socket.on("compressionDone", (data) => {
+            setImageData(data);
+        });
+
+        return () => {
+            socket.off("progress");
+            socket.off("compressionDone");
+        };
+    }, []);
+
     const handleDownload = () => {
         if (!Img) return;
 
@@ -49,7 +68,10 @@ export const CompressedPage = () => {
            
             <CompressedContainer>
                 {loading ? (
+                    <>
                      <LoadingMessage>Processing image, this may take a few seconds, please wait...</LoadingMessage>
+                     <div>`$Progress: {progress}`</div>
+                     </>
                 ): (
                 <>
                 <p>Compressed Image:</p>
