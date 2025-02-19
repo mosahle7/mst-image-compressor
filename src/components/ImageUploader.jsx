@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { uploadImage } from "./fetcher";
-import io from "socket.io-client";
+import socket from "./socket";
 
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
@@ -12,8 +12,35 @@ const ImageUploader = () => {
 
     const navigate = useNavigate();
 
-    const socket = io("https://img-compression-backend.onrender.com");
+    useEffect(() => {
+        socket.on("progress", (percent) => {
+            navigate('/compressed', {
+                replace: true,
+                state: {
+                    progress: percent
+                }
+            });
+        });
 
+        socket.once("compressionDone", (data) => {
+            navigate('/compressed', {
+                replace: true,
+                state: {
+                    image: data.image_url,
+                    size: data.size,
+                    name: data.name,
+                    loading: false
+                }
+            });
+        });
+
+        return () => {
+            socket.off("progress");
+            socket.off("compressionDone");
+        };
+    }, [navigate]);
+
+    
     const handleFileChange = (event) => {
         let file;
         if (event.target.files && event.target.files.length>0){
@@ -53,31 +80,35 @@ const ImageUploader = () => {
                     progress:0
                 
                 }});
-
+                
+                try{
                 const compressedData = await uploadImage(image, socket);
 
                 console.log("Compressed Image Data: ",compressedData);
+                } catch(error) {
+                    console.error("Error uploading image: ", error)
+                }
 
-            socket.on("progress", (percent) => {
-                navigate('/compressed', {
-                    replace: true,  // Prevent back navigation to the loading state
-                    state: {
-                        progress: percent
-                    }
-                })
-            }) 
+            // socket.on("progress", (percent) => {
+            //     navigate('/compressed', {
+            //         replace: true,  // Prevent back navigation to the loading state
+            //         state: {
+            //             progress: percent
+            //         }
+            //     })
+            // }) 
 
-            socket.once("compressionDone", (data) => {
-                navigate('/compressed', {
-                    replace: true,
-                    state: {
-                        image: data.image_url,
-                        size: data.size,
-                        name: data.name,
-                        loading: false
-                    }
-                });
-            });
+            // socket.once("compressionDone", (data) => {
+            //     navigate('/compressed', {
+            //         replace: true,
+            //         state: {
+            //             image: data.image_url,
+            //             size: data.size,
+            //             name: data.name,
+            //             loading: false
+            //         }
+            //     });
+            // });
                 
         }
 
