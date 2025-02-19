@@ -13,38 +13,40 @@ export const CompressedPage = () => {
     const [imgName, setimgName] = useState("");
     const [Img,setImg] = useState("");
     const [loading, setLoading] = useState(location.state?.loading ?? true);
-    const [progress, setProgress] = useState(0);
+    const [progress, setProgress] = useState(location.state?.progress ?? 0);
    
     useEffect(() => {
         if (!location.state){
             navigate("/");
         }
 
-        else if(location.state?.image) {
-            console.log("Local State: ", location.state);
-            setImg(location.state.image);
-            setImgSize(location.state.size);
-            setimgName(location.state.name);
-            setLoading(false);
-
-        }
-    }, [location.state, navigate]);
-    
-    useEffect(() => {
         socket.on("progress", (percent) => {
             setProgress(percent);
         });
 
         socket.on("compressionDone", (data) => {
-            setImageData(data);
+            setImg(data.image_url);
+            setImgSize(data.size);
+            setimgName(data.name);
+            setLoading(false);
         });
+
+        // else if(location.state?.image) {
+        //     console.log("Local State: ", location.state);
+        //     setImg(location.state.image);
+        //     setImgSize(location.state.size);
+        //     setimgName(location.state.name);
+        //     setLoading(false);
+
+        // }
 
         return () => {
             socket.off("progress");
             socket.off("compressionDone");
         };
-    }, []);
 
+    }, [location.state, navigate]);
+    
     const handleDownload = () => {
         if (!Img) return;
 
@@ -70,7 +72,7 @@ export const CompressedPage = () => {
                 {loading ? (
                     <>
                      <LoadingMessage>Processing image, this may take a few seconds, please wait...</LoadingMessage>
-                     <div>`$Progress: {progress}`</div>
+                     <div>`$Progress: {progress}%`</div>
                      </>
                 ): (
                 <>

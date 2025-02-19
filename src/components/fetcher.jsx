@@ -33,7 +33,7 @@
 
 import axios from "axios";
 
-export const uploadImage = async (image, socket, onProgress) => {
+export const uploadImage = async (image, socket) => {
     const formData = new FormData();
     formData.append("file", image);
 
@@ -48,9 +48,9 @@ export const uploadImage = async (image, socket, onProgress) => {
             }
         );
 
-        const { image_id } = response.data; // Backend sends an image_id for tracking
-
-        socket.emit("startCompression", { image_id });
+        socket.on("progress", (percent) => {
+            socket.emit("progressUpdate", { percent });
+        });
 
         // Listen for progress updates
         // socket.on("progress", (progress) => {
