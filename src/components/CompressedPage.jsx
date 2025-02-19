@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import io from "socket.io-client";
 
-const socket = io("https://img-compression-backend.onrender.com");
+const socket = io("https://img-compression-backend.onrender.com", {
+    transports: ["polling", "websocket"],
+  });
 
 export const CompressedPage = () => {
     const location = useLocation();
