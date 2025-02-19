@@ -48,9 +48,9 @@ export const uploadImage = async (image, socket) => {
             }
         );
 
-        socket.on("progress", (percent) => {
-            socket.emit("progressUpdate", { percent });
-        });
+        // socket.on("progress", (percent) => {
+        //     socket.emit("progressUpdate", { percent });
+        // });
 
         // Listen for progress updates
         // socket.on("progress", (progress) => {
