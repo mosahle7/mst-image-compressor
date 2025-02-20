@@ -155,11 +155,6 @@ const ImageUploader = () => {
             <>
             <ImgDetails>{fileName}  {fileSize} KB</ImgDetails>
             <UploadButton onClick={handleButton}>Compress</UploadButton>
-            {progress > 0 && progress<100 && (
-                <ProgressBarWrapper>
-                    <ProgressBar style={{ width: `${progress}%` }} />
-                </ProgressBarWrapper>
-            )}
             </>
             )}
 
