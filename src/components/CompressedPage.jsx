@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import socket from "./socket";
+// import socket from "./socket";
 
 export const CompressedPage = () => {
     const location = useLocation();
@@ -11,37 +11,37 @@ export const CompressedPage = () => {
     const [imgName, setimgName] = useState("");
     const [Img,setImg] = useState("");
     const [loading, setLoading] = useState(location.state?.loading ?? true);
-    const [progress, setProgress] = useState(location.state?.progress ?? 0);
+    // const [progress, setProgress] = useState(location.state?.progress ?? 0);
    
     useEffect(() => {
         if (!location.state){
             navigate("/");
         }
 
-        socket.on("progress", (percent) => {
-            setProgress(percent);
-        });
+        // socket.on("progress", (percent) => {
+        //     setProgress(percent);
+        // });
 
-        socket.on("compressionDone", (data) => {
-            setImg(data.image_url);
-            setImgSize(data.size);
-            setimgName(data.name);
-            setLoading(false);
-        });
-
-        // else if(location.state?.image) {
-        //     console.log("Local State: ", location.state);
-        //     setImg(location.state.image);
-        //     setImgSize(location.state.size);
-        //     setimgName(location.state.name);
+        // socket.on("compressionDone", (data) => {
+        //     setImg(data.image_url);
+        //     setImgSize(data.size);
+        //     setimgName(data.name);
         //     setLoading(false);
+        // });
 
-        // }
+        else if(location.state?.image) {
+            console.log("Local State: ", location.state);
+            setImg(location.state.image);
+            setImgSize(location.state.size);
+            setimgName(location.state.name);
+            setLoading(false);
 
-        return () => {
-            socket.off("progress");
-            socket.off("compressionDone");
-        };
+        }
+
+    //     return () => {
+    //         socket.off("progress");
+    //         socket.off("compressionDone");
+    //     };
 
     }, [location.state, navigate]);
     
@@ -70,7 +70,7 @@ export const CompressedPage = () => {
                 {loading ? (
                     <>
                      <LoadingMessage>Processing image, this may take a few seconds, please wait...</LoadingMessage>
-                     <div>`$Progress: {progress}%`</div>
+                     {/* <div>`$Progress: {progress}%`</div> */}
                      </>
                 ): (
                 <>

@@ -2,7 +2,7 @@ import { useState , useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { uploadImage } from "./fetcher";
-import socket from "./socket";
+// import socket from "./socket";
 
 const ImageUploader = () => {
     const [image, setImage] = useState(null);
@@ -12,33 +12,33 @@ const ImageUploader = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        socket.on("progress", (percent) => {
-            navigate('/compressed', {
-                replace: true,
-                state: {
-                    progress: percent
-                }
-            });
-        });
+    // useEffect(() => {
+    //     socket.on("progress", (percent) => {
+    //         navigate('/compressed', {
+    //             replace: true,
+    //             state: {
+    //                 progress: percent
+    //             }
+    //         });
+    //     });
 
-        socket.once("compressionDone", (data) => {
-            navigate('/compressed', {
-                replace: true,
-                state: {
-                    image: data.image_url,
-                    size: data.size,
-                    name: data.name,
-                    loading: false
-                }
-            });
-        });
+    //     socket.once("compressionDone", (data) => {
+    //         navigate('/compressed', {
+    //             replace: true,
+    //             state: {
+    //                 image: data.image_url,
+    //                 size: data.size,
+    //                 name: data.name,
+    //                 loading: false
+    //             }
+    //         });
+    //     });
 
-        return () => {
-            socket.off("progress");
-            socket.off("compressionDone");
-        };
-    }, [navigate]);
+    //     return () => {
+    //         socket.off("progress");
+    //         socket.off("compressionDone");
+    //     };
+    // }, [navigate]);
 
     
     const handleFileChange = (event) => {
@@ -77,7 +77,6 @@ const ImageUploader = () => {
             navigate('/compressed', {
                 state: {
                     loading: true,
-                    progress:0
                 
                 }});
                 
@@ -99,15 +98,15 @@ const ImageUploader = () => {
             // }) 
 
             // socket.once("compressionDone", (data) => {
-            //     navigate('/compressed', {
-            //         replace: true,
-            //         state: {
-            //             image: data.image_url,
-            //             size: data.size,
-            //             name: data.name,
-            //             loading: false
-            //         }
-            //     });
+                navigate('/compressed', {
+                    replace: true,
+                    state: {
+                        image: data.image_url,
+                        size: data.size,
+                        name: data.name,
+                        loading: false
+                    }
+                });
             // });
                 
         }
