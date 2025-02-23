@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 import styled from "styled-components";
+import { RingLoader } from "react-spinners";
 
 export const CompressedPage = () => {
     const location = useLocation();
@@ -10,7 +11,13 @@ export const CompressedPage = () => {
     const [imgName, setimgName] = useState("");
     const [Img,setImg] = useState("");
     const [loading, setLoading] = useState(location.state?.loading ?? true);
-   
+    
+    const cssOverride = {
+        display: "block",
+        marginTop: "30px",
+    }
+
+
     useEffect(() => {
         if (!location.state){
             navigate("/");
@@ -49,7 +56,10 @@ export const CompressedPage = () => {
            
             <CompressedContainer>
                 {loading ? (
+                    <>
                      <LoadingMessage>Processing image, this may take a few seconds, please wait...</LoadingMessage>
+                     <RingLoader loading={loading} size={50} color='#123abc' cssOverride={cssOverride}/>
+                    </>
                 ): (
                 <>
                 <p>Compressed Image:</p>
@@ -69,7 +79,11 @@ export const CompressedPage = () => {
 
 const CompressedContainer = styled.div`
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
 `
 
