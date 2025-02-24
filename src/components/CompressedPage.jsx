@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, CSSProperties } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { RingLoader } from "react-spinners";
+import { DownloadIcon } from "./Icons";
 
 export const CompressedPage = () => {
     const location = useLocation();
@@ -67,7 +68,8 @@ export const CompressedPage = () => {
                 <ImgDetails>
                 {imgName}  {imgSize} KB
                 </ImgDetails>
-                <DownloadButton onClick={handleDownload}>Download</DownloadButton>
+                {/* <DownloadButton onClick={handleDownload}><DownloadIcon width={50} /></DownloadButton> */}
+                <DownloadIcon width={30} onClick={handleDownload} />
                 </>
                 )}
             </CompressedContainer>

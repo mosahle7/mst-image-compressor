@@ -14,10 +14,21 @@ export const Layout = () => {
         <Title> mSt Image Compressor </Title>
 
     </header>
+    
+    <section>
+        <nav>
 
-    <main>
-        <Outlet></Outlet>
-    </main>
+            <ul>
+    
+            </ul>
+        </nav>
+
+        <main>
+            <Outlet></Outlet>
+        </main>
+      
+    </section>
+
 
     <footer>
         <Text>mSt Image Compressor</Text>
