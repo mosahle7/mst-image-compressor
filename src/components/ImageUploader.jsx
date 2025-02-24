@@ -146,7 +146,7 @@ const Container = styled.div`
     }
 
     p{
-        color: #222;
+        // color: #222;
         font-size: 18px;
     }
 `
