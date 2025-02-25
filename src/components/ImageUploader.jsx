@@ -131,13 +131,13 @@ const Container = styled.div`
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    height: 500px;
+    height: 400px;
     gap: 1rem;
     padding: 2rem;
     border: 2px dashed #aaa;
     border-radius: 8px;
     text-align: center;
-    width: 50%;
+    width: 40%;
     max-width: 1000px;
     max-height: 100vh;
     cursor: pointer;

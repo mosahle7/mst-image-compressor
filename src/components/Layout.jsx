@@ -14,12 +14,16 @@ export const Layout = () => {
         console.log("I am dark!");
         document.documentElement.style.setProperty('--background-color', 'var(--background-color-dark)');
         document.documentElement.style.setProperty('--text-color', 'var(--text-color-dark)');
+        document.documentElement.style.setProperty('--border-color', 'var(--border-color-dark)');
+        document.documentElement.style.setProperty('--nav-color', 'var(--nav-color-dark)');
         }
         else{
         setLight(true);
         console.log("I am light!");
         document.documentElement.style.setProperty('--background-color', 'var(--background-color-light)');
         document.documentElement.style.setProperty('--text-color', 'var(--text-color-light)');
+        document.documentElement.style.setProperty('--border-color', 'var(--border-color-light)');
+        document.documentElement.style.setProperty('--nav-color', 'var(--nav-color-light)');
     }
     }
 
@@ -43,13 +47,20 @@ export const Layout = () => {
     </header>
     
     <section>
-        <nav>
+        <Nav>
 
             <ul>
-                Test
-    
+                <li>
+                    Home
+                </li>
+                <li>
+                    Products
+                </li>
+                <li>
+                    About
+                </li>
             </ul>
-        </nav>
+        </Nav>
 
         <main>
             <Outlet></Outlet>
@@ -60,7 +71,7 @@ export const Layout = () => {
 
     <footer>
         <Text>mSt Image Compressor</Text>
-        <Link to='/'>Home</Link>
+        <Link to='/'>Home</Link> | <Link to='/'>Products</Link> | <Link>About</Link>
 
     </footer>
     </AppContainer>
@@ -88,6 +99,10 @@ const Title = styled.div`
     margin-left: -40px;
 `;
 
+const Nav = styled.nav`
+    border-bottom: 1px solid var(--border-color);
+`
 const Text = styled.div`
     padding-bottom: 10px;
+    clor: var(--nav-color);
 `
